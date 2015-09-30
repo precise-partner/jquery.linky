@@ -34,6 +34,7 @@
                 }
             },
             defaultOptions = {
+                defaultProtocol: 'http://',
                 mentions: false,
                 hashtags: false,
                 urls: true,
@@ -42,14 +43,15 @@
             extendedOptions = $.extend(defaultOptions, options),
             elContent = $el.html(),
             // Regular expression courtesy of Matthew O'Riordan, see: http://goo.gl/3syEKK
-            urlRegEx = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-]*)?\??(?:[\-\+=&;%@\.\w]*)#?(?:[\.\!\/\\\w]*))?)/g,
+            urlRegEx = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)|([A-Za-z0-9]{3,9}\.)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-]*)?\??(?:[\-\+=&;%@\.\w]*)#?(?:[\.\!\/\\\[\]\w]*))?)/g,
             matches;
 
             // Linkifying URLs
             if (extendedOptions.urls) {
                 matches = elContent.match(urlRegEx);
                 if (matches) {
-                    elContent = _linkifyUrls(matches, $el);
+                    elContent = _linkifyUrls(matches, $el, extendedOptions);
+                    //console.log(elContent);
                 }
             }
 
@@ -68,14 +70,17 @@
 
     // For any URLs present, unless they are already identified within
     // an `a` element, linkify them.
-    function _linkifyUrls(matches, $el) {
+    function _linkifyUrls(matches, $el, options) {
         var elContent = $el.html();
 
         $.each(matches, function() {
+          // Save "this" to var | And add default protocol if not exists
+          var value = this.indexOf('://') < 0 ? options.defaultProtocol + this : this;
+
             // Only linkify URLs that are not already identified as
             // `a` elements with an `href`.
             if ($el.find("a[href='" + this + "']").length === 0) {
-                elContent = elContent.replace(this, "<a href='" + this + "' target='_blank'>" + this + "</a>");
+                elContent = elContent.replace(this, "<a href='" + value + "' target='_blank'>" + value + "</a>");
             }
         });
 
