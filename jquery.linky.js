@@ -74,9 +74,17 @@
         var elContent = $el.html();
 
         $.each(matches, function() {
-          // Save "this" to var | And add default protocol if not exists
-          var value = this.indexOf('://') < 0 ? options.defaultProtocol + this : this;
-
+            // Save "this" to var
+            var value;
+            if (this.indexOf('@') > -1) {
+                return elContent;
+            } else if (this.indexOf('://') < 0) {
+                // And add default protocol if not exists
+                value = options.defaultProtocol + this;
+            } else {
+                value = this;
+            }
+          
             // Only linkify URLs that are not already identified as
             // `a` elements with an `href`.
             if ($el.find("a[href='" + this + "']").length === 0) {
