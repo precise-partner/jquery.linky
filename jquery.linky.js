@@ -43,7 +43,7 @@
             extendedOptions = $.extend(defaultOptions, options),
             elContent = $el.html(),
             // Regular expression courtesy of Matthew O'Riordan, see: http://goo.gl/3syEKK
-            urlRegEx = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)|([A-Za-z0-9]{3,9}\.)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-]*)?\??(?:[\-\+=&;%@\.\w]*)#?(?:[\.\!\/\\\[\]\w]*))?)/g,
+            urlRegEx = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)|([A-Za-z0-9]{3,9}\.)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-]*)?\??(?:[\-\+=&;%@\.\w]*)#?(?:[\.\!\/\\\[\]\w\&=;]*))?)/g,
             matches;
 
             // Linkifying URLs
@@ -51,7 +51,6 @@
                 matches = elContent.match(urlRegEx);
                 if (matches) {
                     elContent = _linkifyUrls(matches, $el, extendedOptions);
-                    //console.log(elContent);
                 }
             }
 
@@ -84,10 +83,11 @@
             } else {
                 value = this;
             }
-          
+            //value = this.replace('&amp', '&');
             // Only linkify URLs that are not already identified as
             // `a` elements with an `href`.
-            if ($el.find("a[href='" + this + "']").length === 0) {
+            var tmp = this.replace('&amp;', '&')
+            if (($el.find("a[href='" + this + "']").length === 0) && ($el.find("a[href='" + tmp + "']").length === 0)) {
                 elContent = elContent.replace(this, "<a href='" + value + "' target='_blank'>" + value + "</a>");
             }
         });
