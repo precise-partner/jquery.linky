@@ -70,6 +70,12 @@
     // For any URLs present, unless they are already identified within
     // an `a` element, linkify them.
     function _linkifyUrls(matches, $el, options) {
+      var tldList = [
+        '.com', '.org', '.net', '.int', '.edu',
+        '.mil', '.info', '.co', '.biz', '.club', '.io',
+        '.ua', '.укр', '.us', '.ru', '.рф', '.kz', '.қаз', '.бел', '.бг'
+        ];
+
         var elContent = $el.html();
 
         $.each(matches, function() {
@@ -83,6 +89,17 @@
             } else {
                 value = this;
             }
+
+            var isDomain = false;
+            for(var prop in tldList) {
+              if (this.indexOf(tldList[prop]) > -1) {
+                isDomain = true;
+              }
+            }
+            if (!isDomain) {
+              return elContent;
+            }
+
             //value = this.replace('&amp', '&');
             // Only linkify URLs that are not already identified as
             // `a` elements with an `href`.
