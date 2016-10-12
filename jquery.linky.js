@@ -43,7 +43,7 @@
             extendedOptions = $.extend(defaultOptions, options),
             elContent = $el.html(),
             // Regular expression courtesy of Matthew O'Riordan, see: http://goo.gl/3syEKK
-            urlRegEx = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)|([A-Za-z0-9]{3,9}\.)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-]*)?\??(?:[\-\+=&;%@\.\w]*)#?(?:[\.\!\/\\\[\]\w\&=;]*))?)/g,
+            urlRegEx = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)|([A-Za-z0-9-]{3,30}\.)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-]*)?\??(?:[\-\+=&;%@\.\w]*)#?(?:[\.\!\/\\\[\]\w\&=;]*))?)/g,
             matches;
 
             // Linkifying URLs
